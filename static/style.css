@@ -4,7 +4,13 @@ body { margin: 0; line-height: 1.65; }
 main { max-width: 880px; margin: 3.5rem auto; padding: 0 1.25rem 4rem; }
 h1 { color: #152b48; font-size: clamp(2rem, 5vw, 2.8rem); margin: 0; letter-spacing: -.04em; }
 .intro { color: #596b80; margin: .35rem 0 1.8rem; }
-form, #result { background: white; border: 1px solid #dce5ef; border-radius: 14px; padding: 1.5rem; box-shadow: 0 8px 30px #213c5b0a; }
+form, #result, .sample-panel { background: white; border: 1px solid #dce5ef; border-radius: 14px; padding: 1.5rem; box-shadow: 0 8px 30px #213c5b0a; }
+.sample-panel { margin-bottom: 1rem; }
+.sample-panel h2 { margin: 0; font-size: 1.2rem; }
+.sample-panel p, .quota-note { color: #596b80; font-size: .9rem; }
+.sample-links { display: flex; flex-wrap: wrap; gap: .6rem; }
+.sample-links a { background: #edf3ff; border-radius: 7px; padding: .4rem .8rem; font-weight: 650; text-decoration: none; }
+.quota-note { margin-bottom: 0; }
 label { display: block; font-weight: 650; margin-bottom: .5rem; }
 .input-row { display: flex; gap: .65rem; flex-wrap: wrap; }
 input { flex: 1; min-width: 220px; padding: .8rem; font: inherit; border: 1px solid #b9c9d9; border-radius: 8px; }

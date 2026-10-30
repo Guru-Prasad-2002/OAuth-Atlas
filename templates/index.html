@@ -3,16 +3,22 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OAuth Guide</title>
+  <title>OAuth Atlas</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <script src="{{ url_for('static', filename='app.js') }}" defer></script>
 </head>
 <body><main>
-  <h1>OAuth Guide</h1>
+  <h1>OAuth Atlas</h1>
   <p class="intro">Find the steps, requirements, and potential blockers for connecting an app.</p>
+  <section class="sample-panel" aria-labelledby="samples-title">
+    <h2 id="samples-title">Sample guides</h2>
+    <p>Download earlier generated examples without using API quota. These are research snapshots, not fully verified guides; review the notes and sources in each file.</p>
+    <div class="sample-links"><a href="{{ url_for('sample', name='github') }}">GitHub ↓</a><a href="{{ url_for('sample', name='slack') }}">Slack ↓</a><a href="{{ url_for('sample', name='gmail') }}">Gmail ↓</a></div>
+  </section>
   <form id="guide-form">
     <label for="app-name">App name or website</label>
     <div class="input-row"><input id="app-name" name="app" placeholder="For example, Slack or slack.com" maxlength="200" required><button id="submit" type="submit">Generate guide</button></div>
+    <p class="quota-note">Live research uses shared free-tier API quotas and may take a few minutes. If the limit is reached, try again later or download a sample above. Generated guides are not saved; download yours before leaving.</p>
   </form>
   <p id="status" role="status" aria-live="polite"></p>
   <section id="result" hidden>

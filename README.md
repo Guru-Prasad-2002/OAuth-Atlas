@@ -1,64 +1,62 @@
-# OAuth Guide
+# OAuth Atlas
 
-A starting point for the Composio take-home assignment: a Flask application that will help developers research OAuth app setup and approval.
+OAuth Atlas is a proof of concept for researching the steps and approval requirements for provider OAuth apps. A developer registers an OAuth app with a provider; their users can then authorize the integration to access selected data. The requirements depend on the provider, requested scopes, and distribution path.
 
-## Setup (Windows Command Prompt)
+**Live demo:** https://oauth-atlas-svvu.onrender.com/  
+**Examples:** Download the saved GitHub, Slack, and Gmail snapshots from the home page, or find them in `Generated_OAuth_Documentatioon/`. These examples are unedited generated outputs with review notes added; they are not fully verified guides.
 
-Open Command Prompt in the project folder, then create and activate a virtual environment:
+## How it works
+
+1. Enter an app name or website. Flask validates the input.
+2. Tavily searches for OAuth setup, distribution, and approval information. The application passes up to six returned excerpts to Gemini as untrusted evidence.
+3. One Gemini model request normally produces a guide. The prompt asks for official sources, uncertainty, blockers, and human versus agent responsibilities. The browser displays the guide and search results, and can download Markdown.
+
+This is a single search-and-synthesis workflow, not an autonomous browser agent. It does not register provider apps, access accounts, test setup flows, or verify generated claims. No database is required; downloaded guides are not retained on the server. Sample snapshots are files in the repository. The UI does not provide permanent links to newly generated guides.
+
+## Evidence check and findings
+
+We checked a sample of the saved output against official documentation on October 30, 2026; the generated snapshots are retained for transparency, with review notes at the top. This is a sample check, not a full audit.
+
+- **Slack:** A generated claim implies broad review requirements and an unverified 4–8 week security review. [Slack's distribution guide](https://docs.slack.dev/app-management/distribution/) distinguishes single-workspace and unlisted distribution from Marketplace review and workspace-admin approval. The [Marketplace review guide](https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide/) describes separate prerequisites and timelines. The third-party timing claim is not verified.
+- **Gmail:** A sample implies review always applies for sensitive/restricted scopes. [Google's restricted-scope guidance](https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification) describes exceptions and cases where a security assessment is required. A forum anecdote is not a reliable approval-time estimate.
+- **GitHub:** The sample couldn't find registration steps. [GitHub's registration documentation](https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app) provides them. The sample remains incomplete and links to the official instructions.
+
+Provider setup was not attempted. Other generated claims, third-party sources, and estimated effort have not been fully checked. Search snippets may omit important conditions, and the model can make unsupported claims or cite irrelevant sources. Verify requirements with the provider before acting.
+
+## Run locally
+
+Requires Python 3.10 or later, a Gemini API key, and a Tavily API key. In Windows Command Prompt:
 
 ```cmd
 py -m venv .venv
 .venv\Scripts\activate.bat
+python -m pip install -r requirements.txt
+copy .env.example .env
 ```
 
-Install the dependencies and start the app:
+Edit `.env` and add `GEMINI_API_KEY` and `TAVILY_API_KEY`. Optionally set `GEMINI_MODEL` to a model available to your Gemini project; the default is `gemini-3.5-flash-lite`. Never commit keys. Then run:
 
 ```cmd
-python -m pip install -r requirements.txt
 python -m flask --app app run --debug
 ```
 
-Before starting the app, add your Gemini API key to `.env` as described below.
+Open http://127.0.0.1:5000/. Stop with Ctrl+C. In PowerShell, activate the environment with `.\.venv\Scripts\Activate.ps1` and copy the example with `Copy-Item .env.example .env`.
 
-## Alternative: Windows PowerShell
+## Deploy
 
-From the project folder, create and activate a virtual environment:
+On Render, create a Python web service from the GitHub repository, choose the Free instance, and set:
 
-```powershell
-py -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+- Build: `pip install -r requirements.txt`
+- Start: `gunicorn --timeout 240 app:app`
+- Environment variables: `GEMINI_API_KEY`, `TAVILY_API_KEY`, and optionally `GEMINI_MODEL`.
 
-If PowerShell blocks activation, run `Set-ExecutionPolicy -Scope Process -ExecutionPolicy RemoteSigned` and then repeat the activation command. This change applies only to the current PowerShell session.
+The free service may take time to wake after inactivity. API quotas are shared by all visitors and may be exhausted; model availability and limits vary by project. Temporary model/network failures are retried up to twice, which can consume more quota; quota errors are not retried automatically. The app has no per-user authentication or rate limiting and is intended as a low-volume demonstration. Keep usage and billing limits in mind when sharing the URL.
 
-Install the dependencies:
+## Project layout
 
-```powershell
-python -m pip install -r requirements.txt
-```
-
-The packages are Flask (web app), python-dotenv (load local environment variables), and google-genai (Gemini API client).
-
-Add your key to `.env`:
-
-```text
-GEMINI_API_KEY=your_key_here
-```
-
-The `.env` file is ignored by Git. Never commit your API key. For a fresh checkout, copy `.env.example` to `.env` and add the key.
-
-Run the starter app:
-
-```powershell
-python -m flask --app app run --debug
-```
-
-Open http://127.0.0.1:5000/. Stop the server with Ctrl+C and leave the virtual environment with `deactivate`.
-
-## Deploy on Render
-
-Push the project to GitHub, keeping `.env` out of the repository. Create a Render Web Service from the repository and select the Free instance. Set the build command to `pip install -r requirements.txt` and the start command to `gunicorn --timeout 240 app:app`. In Render's Environment settings, add `GEMINI_API_KEY` and `TAVILY_API_KEY` with your own values; optionally add `GEMINI_MODEL`. Deploy and test the public URL. The longer worker timeout accommodates slow research calls and retries. Free services can take about a minute to wake after inactivity. Generated guides are not saved on the server.
-
-## Current status
-
-Add `TAVILY_API_KEY=your_key_here` to `.env` for web search. Enter an app name or website to generate a guide using Tavily search and Gemini. The default model is `gemini-3.5-flash-lite`; set `GEMINI_MODEL` in `.env` to use another available model. The normal flow uses one search and one model request; temporary model server and network failures may trigger up to two retries, each of which can consume quota. Rate-limit errors are not automatically retried. Search results may include third-party sources and are not independent verification of every claim. Guides are not saved and disappear on refresh. Review the result and sources before relying on it. This workflow researches public material; it does not register an OAuth app or test a provider's setup flow.
+- `app.py`: Flask routes, request validation, and sample downloads.
+- `guide_service.py`: Tavily search, Gemini call, bounded retries, and error handling.
+- `prompts/guide.txt`: research and guide instructions.
+- `templates/` and `static/`: browser interface and Markdown download.
+- `Generated_OAuth_Documentatioon/`: saved example snapshots with review notes.
+- `.env.example`: configuration placeholders; real keys stay in `.env` locally or Render environment variables.

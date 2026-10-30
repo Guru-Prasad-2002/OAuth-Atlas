@@ -1,4 +1,4 @@
-"""Generate a guide with one grounded model request in the normal case."""
+"""Research with Tavily and generate a guide from snippets with Gemini."""
 import random
 import time
 import logging
@@ -63,7 +63,7 @@ def generate_guide(subject, api_key):
                 if exc.code == 404:
                     raise GuideError(f'Gemini could not find the configured model ({model}). Check model availability in AI Studio.', 502) from exc
                 if exc.code == 400:
-                    raise GuideError('Gemini rejected the request (HTTP 400). Check whether this model supports search grounding for your project.', 502) from exc
+                    raise GuideError('Gemini rejected the request (HTTP 400). Check the configured model and project access.', 502) from exc
                 raise GuideError(f'Gemini could not complete the request (HTTP {exc.code}). Check the server log and try again later.') from exc
             except (httpx.TimeoutException, httpx.NetworkError) as exc:
                 if attempt < 2:

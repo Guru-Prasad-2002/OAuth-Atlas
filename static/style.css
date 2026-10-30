@@ -1,0 +1,28 @@
+:root { color-scheme: light; font-family: system-ui, sans-serif; color: #1d2c3c; background: #f4f7fb; }
+* { box-sizing: border-box; }
+body { margin: 0; line-height: 1.65; }
+main { max-width: 880px; margin: 3.5rem auto; padding: 0 1.25rem 4rem; }
+h1 { color: #152b48; font-size: clamp(2rem, 5vw, 2.8rem); margin: 0; letter-spacing: -.04em; }
+.intro { color: #596b80; margin: .35rem 0 1.8rem; }
+form, #result { background: white; border: 1px solid #dce5ef; border-radius: 14px; padding: 1.5rem; box-shadow: 0 8px 30px #213c5b0a; }
+label { display: block; font-weight: 650; margin-bottom: .5rem; }
+.input-row { display: flex; gap: .65rem; flex-wrap: wrap; }
+input { flex: 1; min-width: 220px; padding: .8rem; font: inherit; border: 1px solid #b9c9d9; border-radius: 8px; }
+input:focus { outline: 2px solid #8db7fa; border-color: #175cd3; }
+button { padding: .8rem 1.2rem; font: inherit; font-weight: 650; color: white; background: #245bcc; border: 0; border-radius: 8px; cursor: pointer; }
+button:hover { background: #1748ad; }
+button:disabled { opacity: .6; cursor: wait; }
+.download { margin: .75rem 0; background: #edf3ff; color: #1748ad; }
+.download:hover { background: #dce9ff; }
+#status { color: #53677b; }
+#result { margin-top: 1rem; }
+.eyebrow { font-size: .72rem; font-weight: 750; letter-spacing: .1em; color: #3469b9; }
+.result-heading h2 { margin: .1rem 0; font-size: 1.7rem; }
+.note { color: #66788b; font-size: .9rem; }
+#guide { overflow-wrap: anywhere; }
+#guide h2, #guide h3 { color: #193a61; margin: 1.7rem 0 .5rem; border-bottom: 1px solid #edf1f5; padding-bottom: .35rem; }
+#guide p { margin: .55rem 0; }
+#guide ul, #guide ol, #sources { padding-left: 1.4rem; }
+#guide li, #sources li { margin: .4rem 0; }
+a { color: #1756b9; overflow-wrap: anywhere; }
+a:hover { color: #123d81; }

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OAuth Guide</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body><main>
+  <h1>OAuth Guide</h1>
+  <p class="intro">Find the steps, requirements, and potential blockers for connecting an app.</p>
+  <form id="guide-form">
+    <label for="app-name">App name or website</label>
+    <div class="input-row"><input id="app-name" name="app" placeholder="For example, Slack or slack.com" maxlength="200" required><button id="submit" type="submit">Generate guide</button></div>
+  </form>
+  <p id="status" role="status" aria-live="polite"></p>
+  <section id="result" hidden>
+    <div class="result-heading"><span class="eyebrow">RESEARCH RESULTS</span><h2>Your guide</h2></div>
+    <button id="download" type="button" class="download">Download guide (.md)</button>
+    <p class="note">Generated from public sources; verify requirements before acting. No provider setup was performed.</p>
+    <div id="guide"></div>
+    <h2>Sources returned by search</h2><p class="note">These are search results, not all necessarily sources used in the guide.</p><ul id="sources"></ul>
+    <p id="no-sources" hidden>No search sources were returned. Treat this guide as unverified.</p>
+  </section>
+</main></body></html>
